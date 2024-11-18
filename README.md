@@ -1,4 +1,4 @@
-# GigWorks 🐝
+# GigWorks 📃
 
 GigWorks is a sleek, user-friendly task management app designed to help you stay organized and on top of your to-dos. Whether it's personal tasks or work-related activities, BusyBee ensures that nothing slips through the cracks. Built with Flutter and utilizing sqflite for local storage, BusyBee offers an efficient, offline-first experience for managing tasks on the go!
 
