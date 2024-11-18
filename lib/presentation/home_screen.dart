@@ -526,6 +526,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             leading: const Icon(Icons.logout),
             title: const Text('Sign Out'),
             onTap: () {
+              Navigator.pop(context);
               Provider.of<AuthProvider>(context, listen: false).signOut();
             },
           ),

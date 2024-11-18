@@ -14,14 +14,17 @@ class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _isLogin = true;
   bool _isLoading = false;
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -76,7 +79,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to continue to GigWorks',
+                    _isLogin
+                        ? 'Sign in to continue to GigWorks'
+                        : 'Create your GigWorks account',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Color(0xFF666666),
@@ -109,20 +114,23 @@ class _AuthScreenState extends State<AuthScreen> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
                       }
-                      if (value.length < 8) {
-                        return 'Password must be at least 8 characters long';
-                      }
-                      if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                        return 'Password must contain at least one uppercase letter';
-                      }
-                      if (!RegExp(r'[a-z]').hasMatch(value)) {
-                        return 'Password must contain at least one lowercase letter';
-                      }
-                      if (!RegExp(r'[0-9]').hasMatch(value)) {
-                        return 'Password must contain at least one digit';
-                      }
-                      if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                        return 'Password must contain at least one special character';
+                      if (!_isLogin) {
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long';
+                        }
+                        if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                          return 'Password must contain at least one uppercase letter';
+                        }
+                        if (!RegExp(r'[a-z]').hasMatch(value)) {
+                          return 'Password must contain at least one lowercase letter';
+                        }
+                        if (!RegExp(r'[0-9]').hasMatch(value)) {
+                          return 'Password must contain at least one digit';
+                        }
+                        if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]')
+                            .hasMatch(value)) {
+                          return 'Password must contain at least one special character';
+                        }
                       }
                       return null;
                     },
@@ -140,6 +148,38 @@ class _AuthScreenState extends State<AuthScreen> {
                       },
                     ),
                   ),
+                  if (!_isLogin) ...[
+                    const SizedBox(height: 16),
+                    _buildInputField(
+                      controller: _confirmPasswordController,
+                      label: 'Confirm Password',
+                      hintText: 'Confirm your password',
+                      obscureText: !_isConfirmPasswordVisible,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please confirm your password';
+                        }
+                        if (value != _passwordController.text) {
+                          return 'Passwords do not match';
+                        }
+                        return null;
+                      },
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isConfirmPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isConfirmPasswordVisible =
+                                !_isConfirmPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _isLoading ? null : _submit,
@@ -168,6 +208,45 @@ class _AuthScreenState extends State<AuthScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _isLogin
+                            ? "Don't have an account? "
+                            : 'Already have an account? ',
+                        style: const TextStyle(
+                          color: Color(0xFF666666),
+                          fontSize: 14,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _isLogin = !_isLogin;
+                            _formKey.currentState?.reset();
+                            _emailController.clear();
+                            _passwordController.clear();
+                            _confirmPasswordController.clear();
+                          });
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.deepPurple,
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          _isLogin ? 'Sign Up' : 'Sign In',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
