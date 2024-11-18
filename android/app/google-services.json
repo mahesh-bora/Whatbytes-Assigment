@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "395232216400",
+    "project_id": "whatbytes-assignment",
+    "storage_bucket": "whatbytes-assignment.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:395232216400:android:ca6857a2e0dbfa5d9a1855",
+        "android_client_info": {
+          "package_name": "com.whatbytes_assignment.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQoyDrHXviN8Oq14wRlAbpte1u2Fyj8Pc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
